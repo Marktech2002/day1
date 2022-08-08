@@ -13,7 +13,7 @@ function findMatches(wordToMatch, cities) {
   });
 }
 
-// code to add commas to number
+// commas to number
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
