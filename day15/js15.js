@@ -1,6 +1,6 @@
 const addItems = document.querySelector('.add-items');
 const itemslist = document.querySelector('.plates');
-const items = [];
+const items = JSON.parse(localStorage.getItem('items')) || [];
   
 function addItem (e) {
     e.preventDefault();
@@ -10,20 +10,32 @@ function addItem (e) {
         done : false
     };
     items.push(item);
-    pulatelists(items , itemslist)
+    pulatelists(items , itemslist);
+    localStorage.setItem('items' , JSON.stringify(items));
     this.reset();
-    console.log(this.undefined);
 }
 
 function pulatelists(plates = [] , platelists) {
    platelists.innerHTML = plates.map((plate,i) => {
       return `  
       <li>
-        <input type="checkbox" data-index=${i} id=item${i} />
+        <input type="checkbox" data-index=${i} id= "item${i}" ${plate.done ? 'checked' : ''} />
         <label for ="item${i}">${plate.text}</label>
       </li>
       `
    }).join('');
 }
 
+function toggleDone(e) {
+   if(!e.target.matches('input')) return ; // for input else skip
+   const el = e.target ;
+   const index = el.dataset.index ;
+   items[index].done = !items[index].done;
+   localStorage.setItem('items' , JSON.stringify(items));
+   pulatelists(items , itemslist);
+
+}
+
 addItems.addEventListener('submit' , addItem);
+itemslist.addEventListener('click' , toggleDone)
+pulatelists(items , itemslist);
